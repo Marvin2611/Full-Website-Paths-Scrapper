@@ -1,22 +1,37 @@
 package org.example;
 
-import java.util.List;
+import org.jsoup.nodes.Document;
+import website.scrapper.Scrapper;
+
+import java.util.*;
 
 public class Pathfinder {
-    public List<String> paths;
+    public Set<String> links = new HashSet<>();
 
-    public void FindAllPaths(String mainURL){
-        //Initialize finding all paths by using the main url of the site
-        //Trys to find all paths of the website
-        //Depth of undersites should be adjustable (3)
+    //Traverses a Website using only the root exposed links
+    public void TraverseSiteUsingSet(){
+        Set<String> counter = new HashSet<>(links);
+        System.out.println("The list used: " + counter);
 
-        //Pseudo Code
-        // Condition: Only go 3 deep into each link
+        for (String count: counter){
+            List<String> newList = GetLinksFromURL(count);
+            AddNewFoundLinksToSet(newList);
+        }
+    }
 
-        // Get all hyperlinks from scrapper
-        // Remove all hyperlinks from list that dont have the matching url premise
-        // Compare existing hyperlinks with the new hyperlinks (no doubles)
-        // Take the first item from the list that was not searched yet and repeat the process
 
+    public List<String> GetLinksFromURL(String url){
+
+        Document doc = Scrapper.TryGetDocument(url);
+        return Scrapper.GetAbsoluteLinks(doc);
+    }
+
+    public void AddNewFoundLinksToSet(List<String> list){
+        for (String link: list){
+            if(Scrapper.ValidateTheURL(link)){
+                links.add(link);
+                System.out.println("New Links List is size: " + links.size());
+            }
+        }
     }
 }
