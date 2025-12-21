@@ -1,20 +1,22 @@
-package org.example;
+package org.model;
 
 import org.jsoup.nodes.Document;
+import website.scrapper.Pathfinder;
 import website.scrapper.Scrapper;
+import website.scrapper.URLValidator;
 
 import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-        Document doc = Scrapper.TryGetDocument("https://books.toscrape.com/index.html");
+        Document doc = Scrapper.TryGetDocument("https://books.toscrape.com/index.html?");
 
         List<String> fullLinkList = Scrapper.GetAbsoluteLinks(doc);
 
-        //Remove all the double entries from the list
+        //Initialize a first search by creating a set of links from the first url
         Set<String> set = new HashSet<>();
         for (String link: fullLinkList){
-            if(Scrapper.ValidateTheURL(link)){
+            if(URLValidator.ValidateTheURL(link)){
                 set.add(link);
             }
         }
