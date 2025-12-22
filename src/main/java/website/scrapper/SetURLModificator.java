@@ -5,8 +5,11 @@ import java.util.Set;
 
 public class SetURLModificator {
 
+    //Refactor strings in list and then loop
+    //Ignore whitespace/and ignore letter size
+
     //Trys to remove all links that are associated with any kind of social media
-    public static Set<String> RemoveSocialMediaLinks(Set<String> links){
+    public static Set<String> removeSocialMediaLinks(Set<String> links){
         Set<String> socialfreeList = new HashSet<>();
         for (String link: links){
             int checksum = 0;

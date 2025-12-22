@@ -9,14 +9,14 @@ import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-        Document doc = Scrapper.TryGetDocument("https://books.toscrape.com/index.html?");
+        Document doc = Scrapper.tryGetDocument("https://books.toscrape.com/index.html?");
 
-        List<String> fullLinkList = Scrapper.GetAbsoluteLinks(doc);
+        List<String> fullLinkList = Scrapper.getAbsoluteLinks(doc);
 
         //Initialize a first search by creating a set of links from the first url
         Set<String> set = new HashSet<>();
         for (String link: fullLinkList){
-            if(URLValidator.ValidateTheURL(link)){
+            if(URLValidator.validateTheURL(link)){
                 set.add(link);
             }
         }
@@ -24,7 +24,7 @@ public class Main {
 
         Pathfinder pathfinder = new Pathfinder();
         pathfinder.links = set;
-        pathfinder.TraverseSiteUsingSet();
+        pathfinder.traverseSiteUsingSet();
         System.out.println("The finished list looks like this so far: " + pathfinder.links);
 
         /*

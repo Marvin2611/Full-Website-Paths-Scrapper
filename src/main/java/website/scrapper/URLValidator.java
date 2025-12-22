@@ -10,7 +10,7 @@ import java.time.Duration;
 public class URLValidator {
 
     //Checks, if the link is secure and is reachable
-    public static boolean ValidateTheURL(String url){
+    public static boolean validateTheURL(String url){
         URI uri = validateUrl(url);
 
         if (uri == null) {

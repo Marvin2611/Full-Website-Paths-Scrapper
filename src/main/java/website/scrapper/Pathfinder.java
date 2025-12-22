@@ -8,26 +8,26 @@ public class Pathfinder {
 
     //Traverses a Website using only the root exposed links
     //Adds the found links to the unchecked links set
-    public void TraverseSiteUsingSet(){
+    public void traverseSiteUsingSet(){
         Set<String> counter = new HashSet<>(links);
         System.out.println("The list used: " + counter);
 
         for (String count: counter){
-            List<String> newList = Scrapper.GetLinksFromURL(count);
-            AddFoundLinksToSet(newList);
+            List<String> newList = Scrapper.getLinksFromURL(count);
+            addFoundLinksToSet(newList);
         }
     }
 
     //Compare links list with the uncheckedLinks list and add missing
-    public void UpdateLinksList(){
+    public void updateLinksList(){
         for (String link: uncheckedLinks){
-            if(URLValidator.ValidateTheURL(link)){
+            if(URLValidator.validateTheURL(link)){
                 links.add(link);
             }
         }
     }
 
-    public void AddFoundLinksToSet(List<String> list){
+    public void addFoundLinksToSet(List<String> list){
         for (String link: list){
             uncheckedLinks.add(link);
         }
