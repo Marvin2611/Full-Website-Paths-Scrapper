@@ -6,10 +6,23 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
+import java.util.HashSet;
+import java.util.Set;
 
 public class URLValidator {
 
-    //Checks, if the link is secure and is reachable
+    //Checks, if a full list of links is secure and is reachable
+    public static Set<String> validateURLs (Set<String> links){
+        Set<String> checkedList = new HashSet<String>();
+        for (String link: links){
+            if(validateTheURL(link)){
+                checkedList.add(link);
+            }
+        }
+        return checkedList;
+    }
+
+    //Checks, if a single link is secure and is reachable
     public static boolean validateTheURL(String url){
         URI uri = validateUrl(url);
 

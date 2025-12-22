@@ -4,7 +4,7 @@ import java.util.*;
 
 public class Pathfinder {
     public Set<String> links = new HashSet<>();
-    Set<String> uncheckedLinks = new HashSet<>();
+    public Set<String> uncheckedLinks = new HashSet<>();
 
     //Traverses a Website using only the root exposed links
     //Adds the found links to the unchecked links set
@@ -28,9 +28,7 @@ public class Pathfinder {
     }
 
     public void addFoundLinksToSet(List<String> list){
-        for (String link: list){
-            uncheckedLinks.add(link);
-        }
+        uncheckedLinks.addAll(list);
         System.out.println("The unchecked links list is size: " + uncheckedLinks.size());
     }
 }

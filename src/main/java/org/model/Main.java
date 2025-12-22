@@ -3,47 +3,48 @@ package org.model;
 import org.jsoup.nodes.Document;
 import website.scrapper.Pathfinder;
 import website.scrapper.Scrapper;
+import website.scrapper.SetURLModificator;
 import website.scrapper.URLValidator;
 
 import java.util.*;
 
+//1. Retrieve html document from root url
+//2. Get initial set of links from the document
+//3. Retrieve every link from the html documents inside the set
+//4. Remove unwanted links (social media, third party)
+//5. Validate links for security and reachability
+//6. Try to place links inside the initial set
+//7. Save links list in json/txt file
+
 public class Main {
     public static void main(String[] args) {
+        //1.
         Document doc = Scrapper.tryGetDocument("https://books.toscrape.com/index.html?");
+        List<String> initialLinkList = Scrapper.getAbsoluteLinks(doc);
 
-        List<String> fullLinkList = Scrapper.getAbsoluteLinks(doc);
-
-        //Initialize a first search by creating a set of links from the first url
-        Set<String> set = new HashSet<>();
-        for (String link: fullLinkList){
+        //2.
+        Set<String> initialSet = new HashSet<>();
+        for (String link: initialLinkList){
             if(URLValidator.validateTheURL(link)){
-                set.add(link);
+                initialSet.add(link);
             }
         }
-        System.out.println("Link list size is: " + set.size());
 
+        //3.
         Pathfinder pathfinder = new Pathfinder();
-        pathfinder.links = set;
+        pathfinder.links = initialSet;
         pathfinder.traverseSiteUsingSet();
-        System.out.println("The finished list looks like this so far: " + pathfinder.links);
 
-        /*
-        //Can be changed, depending on the site that needs to be loaded
-        String siteTrunk = "w3schools.com";
-        String query = String.format("a[href*=%s]", siteTrunk);
+        //4.
+        Set<String> socialFreeSet = SetURLModificator.removeSocialMediaLinks(pathfinder.uncheckedLinks);
 
-        //Only get the links that include the siteTrunk
-        //IMPORTANT: Missing the relative paths!
-        Elements linkTagsFull = doc.select(query);
+        //5.
+        Set<String> finalSet = URLValidator.validateURLs(socialFreeSet);
 
-        //Turn all the jsoup elements href into a string list
-        List<String> linkTexts = new ArrayList<String>();
-        for (Element element: linkTagsFull){
-            String link = element.text();
-            linkTexts.add(link);
-            //System.out.println("Links Full: " + linkTexts.getLast());
-        }
+        //6.
+        finalSet.addAll(initialSet);
+        System.out.println("The Set has size: " + finalSet.size());
+        System.out.println("The final set is: " + finalSet);
 
-        System.out.println("List length: " + linkTexts.size()); */
     }
 }
